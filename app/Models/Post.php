@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'slug', 'content','category_id','description','posted','image'];
+    protected $fillable = ['title', 'slug', 'content', 'category_id', 'description', 'posted', 'image'];
+
+    /* 1 publicación pertenece unicamente a 1 categoría */
     public function category(){
         return $this->belongsTo(Category::class);
     }
-
 }
