@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\Post\PutRequest;
+use App\Http\Requests\Post\StoreRequest;
 
 class UserController extends Controller
 {

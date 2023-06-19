@@ -7,6 +7,7 @@ use App\Models\Category;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
@@ -18,8 +19,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(5);
-        /* if (!Gate::allows('index', $posts[0])) {
+        $posts = Post::paginate(2);
+    /*     if (!Gate::allows('index', $posts[0])) {
             abort(403);
         } */
         return view('dashboard.post.index', compact('posts'));
@@ -36,7 +37,7 @@ class PostController extends Controller
             abort(403);
         } */
         $task = 'create';
-        return view('dashboard.post.create', compact('categories', 'post','task'));
+        return view('dashboard.post.create', compact('categories', 'post', 'task'));
     }
 
     /**
@@ -46,7 +47,7 @@ class PostController extends Controller
     {
         $post = new Post($request->validated());
         $post->save();
-        return to_route('posts.index')->with('status', "Nuevo post creado");
+        return to_route('post.index')->with('status', "Nuevo post creado");
     }
 
     /**
@@ -76,12 +77,12 @@ class PostController extends Controller
     public function update(PutRequest $request, Post $post)
     {
         $data = $request->validated();
-        if(isset($data['image'])){
-            $data['image'] = $filename = time().".".$data['image']->extension();
+        if (isset($data['image'])) {
+            $data['image'] = $filename = time() . "." . $data['image']->extension();
             $request->image->move(public_path('images/otro'), $filename);
         }
         $post->update($data);
-        return redirect()->route('posts.index')->with('status', 'Publicación actualizado');
+        return redirect()->route('post.index')->with('status', 'Publicación actualizado');
     }
 
     /**
@@ -93,6 +94,6 @@ class PostController extends Controller
             abort(403);
         } */
         $post->delete();
-        return redirect()->route('posts.index')->with('status', 'Publicación eliminada');
+        return redirect()->route('post.index')->with('status', 'Publicación eliminada');
     }
 }
